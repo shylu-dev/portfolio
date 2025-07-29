@@ -1,0 +1,247 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Dancing+Script:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Light theme - Soft pastels and feminine colors */
+    --background: 330 25% 98%;
+    --foreground: 330 15% 15%;
+
+    --card: 330 20% 97%;
+    --card-foreground: 330 15% 20%;
+
+    --popover: 330 25% 98%;
+    --popover-foreground: 330 15% 15%;
+
+    /* Soft rose gold primary */
+    --primary: 350 60% 70%;
+    --primary-foreground: 330 25% 98%;
+    --primary-glow: 350 70% 80%;
+
+    /* Lavender secondary */
+    --secondary: 280 40% 85%;
+    --secondary-foreground: 280 30% 25%;
+
+    /* Soft pink muted */
+    --muted: 320 30% 92%;
+    --muted-foreground: 320 15% 45%;
+
+    /* Soft peach accent */
+    --accent: 20 60% 85%;
+    --accent-foreground: 20 30% 25%;
+
+    --destructive: 0 75% 65%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 320 25% 88%;
+    --input: 320 25% 90%;
+    --ring: 350 60% 70%;
+
+    --radius: 1rem;
+
+    /* Custom gradient variables */
+    --gradient-primary: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary-glow)));
+    --gradient-soft: linear-gradient(135deg, hsl(var(--accent)), hsl(var(--secondary)));
+    --gradient-hero: linear-gradient(135deg, hsl(320 40% 95%), hsl(280 35% 90%));
+    
+    /* Shadows with soft pink glow */
+    --shadow-soft: 0 4px 20px -4px hsl(var(--primary) / 0.15);
+    --shadow-glow: 0 8px 32px -8px hsl(var(--primary) / 0.25);
+    --shadow-card: 0 2px 16px -2px hsl(var(--primary) / 0.1);
+
+    /* Animation variables */
+    --transition-smooth: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-bounce: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+
+    --sidebar-background: 0 0% 98%;
+
+    --sidebar-foreground: 240 5.3% 26.1%;
+
+    --sidebar-primary: 240 5.9% 10%;
+
+    --sidebar-primary-foreground: 0 0% 98%;
+
+    --sidebar-accent: 240 4.8% 95.9%;
+
+    --sidebar-accent-foreground: 240 5.9% 10%;
+
+    --sidebar-border: 220 13% 91%;
+
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  .dark {
+    /* Dark theme - Elegant dark with rose gold accents */
+    --background: 330 15% 8%;
+    --foreground: 330 20% 92%;
+
+    --card: 330 15% 10%;
+    --card-foreground: 330 20% 92%;
+
+    --popover: 330 15% 8%;
+    --popover-foreground: 330 20% 92%;
+
+    /* Rose gold primary in dark mode */
+    --primary: 350 65% 75%;
+    --primary-foreground: 330 15% 8%;
+    --primary-glow: 350 70% 85%;
+
+    /* Deep purple secondary */
+    --secondary: 280 25% 20%;
+    --secondary-foreground: 280 40% 85%;
+
+    /* Dark muted */
+    --muted: 320 20% 15%;
+    --muted-foreground: 320 15% 65%;
+
+    /* Warm accent */
+    --accent: 20 30% 25%;
+    --accent-foreground: 20 60% 85%;
+
+    --destructive: 0 75% 70%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 320 20% 18%;
+    --input: 320 20% 16%;
+    --ring: 350 65% 75%;
+
+    /* Dark mode gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary-glow)));
+    --gradient-soft: linear-gradient(135deg, hsl(var(--accent)), hsl(var(--secondary)));
+    --gradient-hero: linear-gradient(135deg, hsl(330 20% 12%), hsl(280 25% 15%));
+    
+    /* Dark shadows with rose gold glow */
+    --shadow-soft: 0 4px 20px -4px hsl(var(--primary) / 0.25);
+    --shadow-glow: 0 8px 32px -8px hsl(var(--primary) / 0.4);
+    --shadow-card: 0 2px 16px -2px hsl(var(--primary) / 0.15);
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-inter;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-dancing;
+  }
+}
+
+@layer components {
+  /* Reusable component styles */
+  .gradient-text {
+    @apply bg-gradient-to-r from-primary to-primary-glow bg-clip-text text-transparent;
+  }
+
+  .glass-card {
+    @apply bg-card/80 backdrop-blur-md border border-border/50;
+    box-shadow: var(--shadow-card);
+  }
+
+  .glow-card {
+    @apply bg-card border border-border transition-all duration-300;
+    box-shadow: var(--shadow-card);
+  }
+
+  .glow-card:hover {
+    box-shadow: var(--shadow-glow);
+    transform: translateY(-2px);
+  }
+
+  .btn-primary {
+    @apply bg-gradient-to-r from-primary to-primary-glow text-primary-foreground;
+    @apply px-6 py-3 rounded-full font-medium transition-all duration-300;
+    @apply hover:scale-105 hover:shadow-lg;
+    box-shadow: var(--shadow-soft);
+  }
+
+  .btn-secondary {
+    @apply bg-secondary text-secondary-foreground border border-border;
+    @apply px-6 py-3 rounded-full font-medium transition-all duration-300;
+    @apply hover:bg-secondary/80 hover:scale-105;
+  }
+
+  .floating-animation {
+    animation: float 6s ease-in-out infinite;
+  }
+
+  .skill-card {
+    @apply glass-card p-6 rounded-2xl transition-all duration-300;
+    @apply hover:scale-105;
+  }
+
+  .project-card {
+    @apply glow-card p-6 rounded-2xl overflow-hidden;
+    @apply hover:border-primary/30;
+  }
+}
+
+@layer utilities {
+  .text-shadow {
+    text-shadow: 0 2px 4px hsl(var(--primary) / 0.1);
+  }
+
+  .bg-hero {
+    background: var(--gradient-hero);
+  }
+
+  .bg-soft {
+    background: var(--gradient-soft);
+  }
+}
+
+/* Custom animations */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.8s ease-out forwards;
+}
+
+.animate-slide-in-right {
+  animation: slideInRight 0.8s ease-out forwards;
+}

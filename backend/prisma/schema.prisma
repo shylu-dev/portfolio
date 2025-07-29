@@ -1,0 +1,81 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Project {
+  id          String   @id @default(cuid())
+  title       String
+  description String
+  image       String
+  techStack   String[]
+  demoLink    String
+  githubLink  String
+  featured    Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Skill {
+  id        String   @id @default(cuid())
+  name      String
+  icon      String
+  featured  Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model ContactMessage {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  subject   String
+  message   String
+  read      Boolean  @default(false)
+  timestamp DateTime @default(now())
+}
+
+// model PersonalInfo {
+//   id        Int     @id @default(1)
+//   name      String
+//   title     String
+//   bio       String
+//   email     String
+//   phone     String
+//   location  String
+//   linkedin  String
+//   github    String
+//   website   String
+//   resumeUrl String?
+// }
+
+model PersonalInfo {
+  id         Int       @id @default(1)
+  name       String
+  title      String
+  bio        String
+  email      String
+  phone      String
+  location   String
+  linkedin   String
+  github     String
+  website    String
+  resumeUrl  String?
+  resumeType String?
+  resumeName String?
+  resumeSize String?
+  uploadDate DateTime?
+}
+
+model AdminAuth {
+  id        Int       @id @default(1)
+  username  String    @unique @default("admin")
+  password  String
+  lastLogin DateTime?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
