@@ -160,7 +160,7 @@ class ApiService {
 
   async toggleProjectFeatured(id: string, featured: boolean): Promise<Project> {
     try {
-      const response = await fetch(`${API_BASE_URL}/projects/${id}/feature`, {
+      const response = await fetch(`${API_BASE_URL}/projects/${id}/featured`, {
         method: 'PATCH',
         headers: this.getAuthHeaders(),
         body: JSON.stringify({ featured }),
