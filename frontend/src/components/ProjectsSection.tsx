@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { ExternalLink, Github, Heart, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -8,7 +9,7 @@ export const ProjectsSection = () => {
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-
+  const navigate = useNavigate();
   useEffect(() => {
     const fetchProjects = async () => {
       try {
@@ -55,13 +56,12 @@ export const ProjectsSection = () => {
   }
 
   const featuredProjects = projects.filter(project => project.featured);
-  const otherProjects = projects.filter(project => !project.featured);
 
   return (
     <section id="projects" className="py-20 bg-background">
       <div className="container mx-auto px-6">
         <div className="text-center mb-16">
-          <h2 className="text-5xl font-bold mb-6 gradient-text">Featured Projects</h2>
+          <h2 className="text-5xl font-bold mb-6 gradient-text">Projects</h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
             A showcase of my recent work and creative solutions
           </p>
@@ -116,57 +116,6 @@ export const ProjectsSection = () => {
           </div>
         )}
 
-        {/* Other Projects */}
-        {otherProjects.length > 0 && (
-          <>
-            <div className="text-center mb-8">
-              <h3 className="text-2xl font-semibold text-muted-foreground">Other Projects</h3>
-            </div>
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-              {otherProjects.map((project, index) => (
-                <div key={project.id} className="project-card animate-fade-in-up" style={{animationDelay: `${(featuredProjects.length + index) * 0.1}s`}}>
-                  <div className="flex items-center space-x-3 mb-4">
-                    <div className="text-3xl">{project.image}</div>
-                    <h3 className="text-lg font-semibold">{project.title}</h3>
-                  </div>
-                  
-                  <p className="text-muted-foreground text-sm mb-4 leading-relaxed">
-                    {project.description}
-                  </p>
-                  
-                  <div className="flex flex-wrap gap-1 mb-4">
-                    {project.techStack.slice(0, 3).map((tech) => (
-                      <Badge key={tech} variant="secondary" className="text-xs">
-                        {tech}
-                      </Badge>
-                    ))}
-                    {project.techStack.length > 3 && (
-                      <Badge variant="secondary" className="text-xs">
-                        +{project.techStack.length - 3}
-                      </Badge>
-                    )}
-                  </div>
-                  
-                  <div className="flex space-x-2">
-                    <Button asChild size="sm" variant="outline" className="flex-1">
-                      <a href={project.demoLink} target="_blank" rel="noopener noreferrer">
-                        <ExternalLink className="h-3 w-3 mr-1" />
-                        Demo
-                      </a>
-                    </Button>
-                    <Button asChild size="sm" variant="outline" className="flex-1">
-                      <a href={project.githubLink} target="_blank" rel="noopener noreferrer">
-                        <Github className="h-3 w-3 mr-1" />
-                        Code
-                      </a>
-                    </Button>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </>
-        )}
-
         {projects.length === 0 && (
           <div className="text-center py-12">
             <p className="text-muted-foreground">No projects available at the moment.</p>
@@ -174,11 +123,8 @@ export const ProjectsSection = () => {
         )}
 
         <div className="text-center mt-12">
-          <Button asChild className="btn-secondary">
-            <a href="https://github.com" target="_blank" rel="noopener noreferrer">
-              <Github className="h-4 w-4 mr-2" />
-              View All Projects on GitHub
-            </a>
+          <Button onClick={() => navigate('/projects')} className="btn-secondary">
+              View All Projects
           </Button>
         </div>
       </div>

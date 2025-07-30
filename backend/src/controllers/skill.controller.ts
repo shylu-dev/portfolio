@@ -1,4 +1,3 @@
-// src/controllers/skill.controller.ts
 import { PrismaClient } from '@prisma/client';
 import { Request, Response } from 'express';
 

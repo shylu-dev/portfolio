@@ -14,7 +14,11 @@ import {
 } from 'lucide-react';
 import { useProjects, useSkills, useContactMessages } from '@/hooks/useData';
 
-export const AdminDashboard = () => {
+interface AdminDashboardProps {
+  onTabChange?: (tab: string) => void;
+}
+
+export const AdminDashboard = ({ onTabChange }: AdminDashboardProps) => {
   const { projects, loading: projectsLoading } = useProjects();
   const { skills, loading: skillsLoading } = useSkills();
   const { messages, loading: messagesLoading } = useContactMessages();
@@ -108,11 +112,38 @@ export const AdminDashboard = () => {
   }, [projects, skills, messages]);
 
   const quickActions = [
-    { label: "Add New Project", action: "projects", icon: FolderOpen },
-    { label: "Update Skills", action: "skills", icon: Settings },
-    { label: "Check Messages", action: "contacts", icon: MessageSquare },
-    { label: "Edit Profile", action: "personal", icon: Users }
+    { 
+      label: "Add New Project", 
+      action: "projects", 
+      icon: FolderOpen,
+      description: "Create and manage projects"
+    },
+    { 
+      label: "Update Skills", 
+      action: "skills", 
+      icon: Settings,
+      description: "Add or edit your skills"
+    },
+    { 
+      label: "Check Messages", 
+      action: "contacts", 
+      icon: MessageSquare,
+      description: "View contact messages",
+      badge: messages.filter(m => !m.read).length > 0 ? messages.filter(m => !m.read).length : null
+    },
+    { 
+      label: "Edit Profile", 
+      action: "personal", 
+      icon: Users,
+      description: "Update personal information"
+    }
   ];
+
+  const handleQuickAction = (action: string) => {
+    if (onTabChange) {
+      onTabChange(action);
+    }
+  };
 
   if (isLoading) {
     return (
@@ -199,14 +230,25 @@ export const AdminDashboard = () => {
               {quickActions.map((action, index) => (
                 <button
                   key={index}
-                  className="p-4 rounded-lg border border-border hover:bg-muted/50 transition-colors text-left group"
+                  onClick={() => handleQuickAction(action.action)}
+                  className="p-4 rounded-lg border border-border hover:bg-muted/50 transition-all duration-200 text-left group hover:border-primary/50 hover:shadow-md"
                 >
                   <div className="flex items-center space-x-3">
-                    <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center group-hover:bg-primary/20 transition-colors">
+                    <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center group-hover:bg-primary/20 transition-colors relative">
                       <action.icon className="h-5 w-5 text-primary" />
+                      {action.badge && (
+                        <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                          {action.badge}
+                        </span>
+                      )}
                     </div>
-                    <div>
-                      <p className="font-medium text-sm">{action.label}</p>
+                    <div className="flex-1">
+                      <p className="font-medium text-sm group-hover:text-primary transition-colors">
+                        {action.label}
+                      </p>
+                      <p className="text-xs text-muted-foreground">
+                        {action.description}
+                      </p>
                     </div>
                   </div>
                 </button>

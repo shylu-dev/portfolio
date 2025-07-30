@@ -2,6 +2,7 @@ import { PrismaClient } from '@prisma/client';
 import { Request, Response } from 'express';
 import { v2 as cloudinary } from 'cloudinary';
 import { personalInfoSchema, resumeLinkSchema, resumeFileSchema } from '../utils/validate';
+import { ZodError } from 'zod';
 
 const prisma = new PrismaClient();
 
@@ -24,9 +25,9 @@ export const getPersonalInfo = async (_: Request, res: Response) => {
 
 export const updatePersonalInfo = async (req: Request, res: Response) => {
   try {
-    // Validate input data
+    // Validate input data - schema now handles transformation to strings
     const validatedData = personalInfoSchema.parse(req.body);
-    
+
     const info = await prisma.personalInfo.upsert({
       where: { id: 1 },
       update: validatedData,
@@ -34,10 +35,10 @@ export const updatePersonalInfo = async (req: Request, res: Response) => {
     });
     res.json(info);
   } catch (error) {
-    if (error.name === 'ZodError') {
-      return res.status(400).json({ 
-        message: 'Validation failed', 
-        errors: error.errors 
+    if (error instanceof ZodError) {
+      return res.status(400).json({
+        message: 'Validation failed',
+        errors: error.issues // Use 'issues' instead of 'errors'
       });
     }
     console.error('Error updating personal info:', error);
@@ -119,14 +120,17 @@ export const uploadResume = async (req: Request, res: Response) => {
       }
     });
   } catch (error) {
-    if (error.name === 'ZodError') {
-      return res.status(400).json({ 
-        message: 'File validation failed', 
-        errors: error.errors 
+    if (error instanceof ZodError) {
+      return res.status(400).json({
+        message: 'File validation failed',
+        errors: error.issues // Use 'issues' instead of 'errors'
       });
     }
     console.error('Resume upload error:', error);
-    res.status(500).json({ message: 'Failed to upload resume', error: error.message });
+    res.status(500).json({ 
+      message: 'Failed to upload resume', 
+      error: error instanceof Error ? error.message : 'Unknown error'
+    });
   }
 };
 
@@ -174,10 +178,10 @@ export const addResumeLink = async (req: Request, res: Response) => {
       }
     });
   } catch (error) {
-    if (error.name === 'ZodError') {
-      return res.status(400).json({ 
-        message: 'Link validation failed', 
-        errors: error.errors 
+    if (error instanceof ZodError) {
+      return res.status(400).json({
+        message: 'Link validation failed',
+        errors: error.issues // Use 'issues' instead of 'errors'
       });
     }
     console.error('Resume link error:', error);

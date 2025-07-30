@@ -1,4 +1,3 @@
-// src/server.ts - UPDATED WITH ADMIN ROUTES
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';

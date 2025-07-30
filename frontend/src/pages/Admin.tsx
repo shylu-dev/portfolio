@@ -16,6 +16,7 @@ const Admin = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [activeTab, setActiveTab] = useState('dashboard');
   const { toast } = useToast();
 
   // Check for existing session
@@ -71,6 +72,10 @@ const Admin = () => {
       title: "Logged out",
       description: "You have been successfully logged out",
     });
+  };
+
+  const handleTabChange = (tab: string) => {
+    setActiveTab(tab);
   };
 
   if (!isAuthenticated) {
@@ -144,7 +149,7 @@ const Admin = () => {
       </header>
 
       <div className="container mx-auto px-6 py-8">
-        <Tabs defaultValue="dashboard" className="w-full">
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
           <TabsList className="grid w-full grid-cols-5 mb-8">
             <TabsTrigger value="dashboard" className="flex items-center space-x-2">
               <Activity className="h-4 w-4" />
@@ -169,7 +174,7 @@ const Admin = () => {
           </TabsList>
 
           <TabsContent value="dashboard">
-            <AdminDashboard />
+            <AdminDashboard onTabChange={handleTabChange} />
           </TabsContent>
           
           <TabsContent value="personal">

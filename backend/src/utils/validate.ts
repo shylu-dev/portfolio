@@ -7,9 +7,9 @@ export const personalInfoSchema = z.object({
   email: z.string().email('Invalid email format'),
   phone: z.string().min(1, 'Phone is required').max(20, 'Phone is too long'),
   location: z.string().min(1, 'Location is required').max(100, 'Location is too long'),
-  linkedin: z.string().url('Invalid LinkedIn URL').optional().or(z.literal('')),
-  github: z.string().url('Invalid GitHub URL').optional().or(z.literal('')),
-  website: z.string().url('Invalid website URL').optional().or(z.literal('')),
+  linkedin: z.string().url('Invalid LinkedIn URL').optional().or(z.literal('')).transform(val => val || ''),
+  github: z.string().url('Invalid GitHub URL').optional().or(z.literal('')).transform(val => val || ''),
+  website: z.string().url('Invalid website URL').optional().or(z.literal('')).transform(val => val || ''),
 });
 
 export const projectSchema = z.object({
@@ -17,8 +17,8 @@ export const projectSchema = z.object({
   description: z.string().min(1, 'Description is required').max(1000, 'Description is too long'),
   image: z.string().min(1, 'Image/emoji is required').max(10, 'Image is too long'),
   techStack: z.array(z.string().min(1, 'Tech stack item cannot be empty')).min(1, 'At least one technology is required'),
-  demoLink: z.string().url('Invalid demo URL').optional().or(z.literal('')),
-  githubLink: z.string().url('Invalid GitHub URL').optional().or(z.literal('')),
+  demoLink: z.string().url('Invalid demo URL').optional().or(z.literal('')).transform(val => val || ''),
+  githubLink: z.string().url('Invalid GitHub URL').optional().or(z.literal('')).transform(val => val || ''),
   featured: z.boolean().default(false),
 });
 
@@ -87,7 +87,7 @@ export const resumeFileSchema = z.object({
     'application/msword',
     'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
   ], {
-    errorMap: () => ({ message: 'Only PDF and Word documents are allowed' })
+    message: 'Only PDF and Word documents are allowed'
   }),
   size: z.number()
     .max(5 * 1024 * 1024, 'File size must be less than 5MB')
